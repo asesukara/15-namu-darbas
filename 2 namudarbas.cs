@@ -1,110 +1,58 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Safari;
 using System;
 
 namespace ClassLibrary1
 {
-    public class TrysSvetainesTest
+
+
+    public class ThreeDrivers
     {
-        //..................................................1 asis namu darbas......................................
-        //.................................................GALIMAI BLOGAS SPRENDIMAS.................................
-        //    private static IWebDriver chromeDriver, firefoxDriver, safariDriver;
 
-        //    [OneTimeSetUp]
-        //    public static void ThreeAllDrivers()/*??????????????????????//*/
-        //    {
-        //        chromeDriver = new ChromeDriver();
-        //        chromeDriver.Url =
-        //          "https://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-        //        chromeDriver.Manage().Window.Maximize();
-        //        chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
-        //        firefoxDriver = new FirefoxDriver();
-        //        firefoxDriver.Url =
-        //          "https://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-        //        firefoxDriver.Manage().Window.Maximize();
-        //        firefoxDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
-        //        safariDriver = new SafariDriver();
-        //        safariDriver.Url =
-        //          "http://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-        //        safariDriver.Manage().Window.Maximize();
-        //        safariDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-        //    }
-        //    [OneTimeTearDown]
-        //    public static void ThreeDrivers()
-        //    {
-        //        chromeDriver.Quit();
-        //        firefoxDriver.Quit();
-        //        safariDriver.Quit();
-        //    }
-        //    [Test]
-        //    public static void WebDriversTest()
-        //    {
-        //        /*objektas*/
-        //        TrysSvetainesPage page = new TrysSvetainesPage(chromeDriver);
-        //        page.NavigateToPage();
-        //    }
-
-        //}
-        //public class TrysSvetainesPage : BasePage
-        //{
-        //    private /*kintamasis*/ const string pageUrl = "https://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-        //    public TrysSvetainesPage(IWebDriver webdriver) : base(webdriver) { }/*konstruktorius*/
-        //    public void NavigateToPage()
-        //    {
-        //        if (Driver.Url != pageUrl)
-        //        {
-        //            Driver.Url = pageUrl;
-        //        }
-        //    }
-        //}
-
-
-        //        ...............................................................................................................................................................................................................................
-        //....................................Sitas Geras sprendimas...........................................
-
-        public class TrysSvetainesSecond
+        [TestCase("Chrome", "Chrome 107 on Windows 10", TestName = "Test Chrome")]
+        [TestCase("Firefox", "Firefox 106 on Windows 10", TestName = "Test Firefox")]
+        [TestCase("Edge", "Edge 107 on Windows 10", TestName = "Test Edge")]
+        public static void TestBrowsers(string browser, string text)
         {
-            private static IWebDriver chromeDriver;
-
-            [Test]
-            public static void ChromeTest()
+            IWebDriver driver = null;
+            if ("Chrome".Equals(browser))
             {
-                chromeDriver = new ChromeDriver();
-                chromeDriver.Url = "http://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-                chromeDriver.Manage().Window.Maximize();
-                chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                chromeDriver.Quit();
+                driver = new ChromeDriver();
             }
-            private static IWebDriver firefoxDriver;
-
-            [Test]
-            public static void FirefoxTest()
+            if ("Firefox".Equals(browser))
             {
-                firefoxDriver = new FirefoxDriver();
-                firefoxDriver.Url = "http://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-                firefoxDriver.Manage().Window.Maximize();
-                firefoxDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                firefoxDriver.Quit();
+                driver = new FirefoxDriver();
             }
-            private static IWebDriver safariDriver;
-
-            [Test]
-            public static void SafariTest()
+            if ("Edge".Equals(browser))
             {
-                safariDriver = new SafariDriver();
-                safariDriver.Url = "http://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
-                safariDriver.Manage().Window.Maximize();
-                safariDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-                safariDriver.Quit();
+                driver = new EdgeDriver();
             }
 
+            driver.Url =
+              "https://developers.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes#parse-useragent";
+            driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            IWebElement resultElement = driver.FindElement(By.CssSelector(".simple-major"));
 
 
+            Assert.AreEqual(text, resultElement.Text, "Browser is not this Browser");
+            driver.Quit();
         }
+
     }
+
+
+
+
+
 }
+
+
+//        ...............................................................................................................................................................................................................................
+//....................................Sitas Geras sprendimas...........................................
+
+
+
